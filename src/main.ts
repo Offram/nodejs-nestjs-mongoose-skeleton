@@ -4,10 +4,15 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './mongoose/filters/AllExceptionError.filter';
+import { ValidationErrorFilter } from './mongoose/filters/ValidationError.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalFilters(new ValidationErrorFilter());
+
   // app.setGlobalPrefix('api');
   const tag = 'Skeleton';
   const title = `NodeJS NestJS ${tag}`;

@@ -13,32 +13,16 @@ export class StudentService {
 
   async create(dto: StudentDto) {
     //Save the new Student in the db
-    try {
-      const student = new this.studentModel(dto);
-      await student.save();
+    const student = new this.studentModel(dto);
+    await student.save();
 
-      return student;
-    } catch (error) {
-      // if (error instanceof PrismaClientKnownRequestError) { //Not implemented
-      //   if (error.code === 'P2002') {
-      //     throw new ForbiddenException('Credentials taken');
-      //   }
-      // }
-    }
+    return student.toJSON();
   }
 
   async getAll() {
     //Get All Students from the db
-    try {
-      const students = await this.studentModel.find().exec();
+    const students = await this.studentModel.find().exec();
 
-      return students;
-    } catch (error) {
-      // if (error instanceof PrismaClientKnownRequestError) { //Not implemented
-      //   if (error.code === 'P2002') {
-      //     throw new ForbiddenException('Credentials taken');
-      //   }
-      // }
-    }
+    return students;
   }
 }

@@ -8,14 +8,14 @@ export class Student {
     type: String,
     required: true,
   })
-  fName: string;
+  firstName: string;
 
   //Last Name
   @Prop({
     type: String,
     required: true,
   })
-  lName: string;
+  lastName: string;
 
   //Contact Person
   @Prop({

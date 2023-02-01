@@ -15,33 +15,17 @@ export class ClassroomService {
   ) {}
 
   async create(dto: ClassroomDto) {
-    //Save the new Student in the db
-    try {
-      const classroom = new this.classroomModel(dto);
-      await classroom.save();
+    //Save the new Classroom in the db
+    const classroom = new this.classroomModel(dto);
+    await classroom.save();
 
-      return classroom;
-    } catch (error) {
-      // if (error instanceof PrismaClientKnownRequestError) { //Not implemented
-      //   if (error.code === 'P2002') {
-      //     throw new ForbiddenException('Credentials taken');
-      //   }
-      // }
-    }
+    return classroom.toJSON();
   }
 
   async getAll() {
-    //Get All Students from the db
-    try {
-      const classrooms = await this.classroomModel.find().exec();
+    //Get All Classrooms from the db
+    const classrooms = await this.classroomModel.find().exec();
 
-      return classrooms;
-    } catch (error) {
-      // if (error instanceof PrismaClientKnownRequestError) { //Not implemented
-      //   if (error.code === 'P2002') {
-      //     throw new ForbiddenException('Credentials taken');
-      //   }
-      // }
-    }
+    return classrooms;
   }
 }
