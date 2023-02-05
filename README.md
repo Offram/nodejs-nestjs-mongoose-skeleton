@@ -92,3 +92,7 @@ npm i class-validator class-transformer
 npm i @nestjs/config
 npm i @nestjs/mongoose mongoose
 npm install @nestjs/swagger
+
+npm i -D pactum
+npm i -D dotenv-cli
+npm run test:e2e
