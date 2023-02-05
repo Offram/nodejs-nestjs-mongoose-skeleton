@@ -21,7 +21,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     /**
      * @description Exception json response
-     * @param message
+     * @param type Error Type @param message Error Message
      */
     const responseMessage = (type, message) => {
       response.status(status).json({
@@ -32,14 +32,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
       });
     };
 
-    console.log('exception: ');
     // Throw an exceptions for either
     // MongoError, ValidationError, TypeError, CastError and Error
 
-    if ((exception.getResponse() as any)?.message) {
+    // console.log(
+    //   'exception instanceof HttpException: ',
+    //   exception instanceof MongooseError,
+    // );
+    console.log('exception: ', exception);
+
+    if (!!(exception?.getResponse() as any)?.message) {
       responseMessage(
         exception.name,
-        (exception.getResponse() as any)?.message,
+        (exception?.getResponse() as any)?.message,
       );
     } else {
       responseMessage(exception.name, exception.message);

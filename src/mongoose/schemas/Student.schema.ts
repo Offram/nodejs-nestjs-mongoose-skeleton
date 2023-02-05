@@ -34,7 +34,7 @@ export class Student {
   //Email address
   @Prop({
     type: String,
-    required: true,
+    required: [true, 'Email is required'],
     unique: true,
     max: 255,
     min: 6,

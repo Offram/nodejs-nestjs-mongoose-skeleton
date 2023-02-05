@@ -1,28 +1,18 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StudentModule } from './modules/student/student.module';
 import { ClassroomModule } from './modules/classroom/classroom.module';
+import { DatabaseModule } from './mongoose/database/database.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
+      isGlobal: true,
     }),
-    MongooseModule.forRootAsync({
-      imports: [
-        ConfigModule,
-        // ServeStaticModule.forRoot({
-        //   rootPath: join(__dirname, '..', 'client'),
-        // }),
-      ],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('DATABASE_URL'),
-      }),
-    }),
+    DatabaseModule,
     StudentModule,
     ClassroomModule,
   ],

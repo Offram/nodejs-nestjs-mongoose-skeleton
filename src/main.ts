@@ -5,12 +5,18 @@ import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './mongoose/filters/AllExceptionError.filter';
+import { MongoExceptionFilter } from './mongoose/filters/MongoError.filter';
 import { ValidationErrorFilter } from './mongoose/filters/ValidationError.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  );
   app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalFilters(new MongoExceptionFilter());
   app.useGlobalFilters(new ValidationErrorFilter());
 
   // app.setGlobalPrefix('api');
