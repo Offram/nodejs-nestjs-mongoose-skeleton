@@ -96,3 +96,11 @@ npm install @nestjs/swagger
 npm i -D pactum
 npm i -D dotenv-cli
 npm run test:e2e
+
+db.createUser({
+  user:'TestUser',
+  pwd: passwordPrompt(),
+  roles: [
+      { role: 'readWrite', db:'TestDb'}
+    ]
+})

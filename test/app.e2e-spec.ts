@@ -6,12 +6,13 @@ import { AppModule } from './../src/app.module';
 import { AllExceptionsFilter } from 'src/mongoose/filters/AllExceptionError.filter';
 import { MongoExceptionFilter } from 'src/mongoose/filters/MongoError.filter';
 import { ValidationErrorFilter } from 'src/mongoose/filters/ValidationError.filter';
-import { DatabaseService } from 'src/mongoose/database/database.service';
 import { ClassroomDto } from 'src/modules/classroom/dto';
 import { StudentDto } from 'src/modules/student/dto';
+import { Model } from 'mongoose';
+import { ClassroomDocument } from 'src/mongoose/schemas/Classroom.schema';
+import { StudentDocument } from 'src/mongoose/schemas/Student.schema';
 
 let app: INestApplication;
-let dbService: DatabaseService;
 
 describe('App e2e', () => {
   beforeAll(async () => {
@@ -32,8 +33,12 @@ describe('App e2e', () => {
     await app.init();
     await app.listen(3333);
 
-    dbService = app.get(DatabaseService);
-    await dbService.cleanDb();
+    const classroomModel: Model<ClassroomDocument> =
+      moduleFixture.get('ClassroomModel');
+    await classroomModel.deleteMany({});
+    const studentModel: Model<StudentDocument> =
+      moduleFixture.get('StudentModel');
+    await studentModel.deleteMany({});
     pactum.request.setBaseUrl('http://localhost:3333');
   });
 
@@ -44,7 +49,7 @@ describe('App e2e', () => {
   describe('Classroom', () => {
     describe('Create Classroom', () => {
       const dto: ClassroomDto = {
-        classroomName: 'First Classroom',
+        classroomName: 'First Test Classroom',
       };
       it('should return classroom', () => {
         return pactum
@@ -52,7 +57,7 @@ describe('App e2e', () => {
           .post('/classroom/create')
           .withBody(dto)
           .expectStatus(201)
-          .stores('classroomId', 'id');
+          .stores('classroomId', '_id');
       });
     });
 
@@ -80,13 +85,17 @@ describe('App e2e', () => {
         age: 50,
         _classroomId: '$S{classroomId}',
       };
+
       it('should return student', () => {
-        return pactum
+        const res = pactum
           .spec()
           .post('/student/create')
           .withBody(dto)
           .expectStatus(201)
-          .stores('studentId', 'id');
+          .stores('studentId', '_id');
+
+        console.log('res: ', res);
+        return res;
       });
     });
 
@@ -95,20 +104,10 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .get('/student/getAll')
-          .withHeaders({
-            Authorization: 'Bearer $S{userAt}',
-          })
           .expectStatus(200)
           .expectJsonLength(1)
           .expectBodyContains('$S{studentId}');
       });
     });
   });
-
-  // it('/ (GET)', () => {
-  //   return request(app.getHttpServer())
-  //     .get('/')
-  //     .expect(200)
-  //     .expect('Hello World!');
-  // });
 });

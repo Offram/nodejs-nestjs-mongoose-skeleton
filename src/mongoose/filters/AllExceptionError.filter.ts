@@ -39,7 +39,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     //   'exception instanceof HttpException: ',
     //   exception instanceof MongooseError,
     // );
-    console.log('exception: ', exception);
+    // console.log('exception: ', exception);
 
     if (!!(exception?.getResponse() as any)?.message) {
       responseMessage(
