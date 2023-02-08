@@ -25,4 +25,27 @@ export class StudentService {
 
     return students;
   }
+
+  async getOne(id: string) {
+    //Get One Student from the db
+    const student = await this.studentModel
+      .findOne({
+        _id: id,
+      })
+      .exec();
+
+    return student;
+  }
+
+  async editById(id: string, dto: StudentDto) {
+    //Update the Student in the db
+    const student = await this.studentModel.findByIdAndUpdate(id, dto).exec();
+
+    return student.toJSON();
+  }
+
+  async deleteById(id: string) {
+    //Delete the Student in the db
+    await this.studentModel.findByIdAndDelete(id).exec();
+  }
 }

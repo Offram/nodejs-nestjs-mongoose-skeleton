@@ -54,7 +54,7 @@ describe('App e2e', () => {
       it('should return classroom', () => {
         return pactum
           .spec()
-          .post('/classroom/create')
+          .post('/classroom')
           .withBody(dto)
           .expectStatus(201)
           .stores('classroomId', '_id');
@@ -65,7 +65,7 @@ describe('App e2e', () => {
       it('should get classrooms', () => {
         return pactum
           .spec()
-          .get('/classroom/getAll')
+          .get('/classroom')
           .expectStatus(200)
           .expectJsonLength(1)
           .expectBodyContains('$S{classroomId}');
@@ -89,12 +89,10 @@ describe('App e2e', () => {
       it('should return student', () => {
         const res = pactum
           .spec()
-          .post('/student/create')
+          .post('/student')
           .withBody(dto)
           .expectStatus(201)
           .stores('studentId', '_id');
-
-        console.log('res: ', res);
         return res;
       });
     });
@@ -103,7 +101,7 @@ describe('App e2e', () => {
       it('should get students', () => {
         return pactum
           .spec()
-          .get('/student/getAll')
+          .get('/student')
           .expectStatus(200)
           .expectJsonLength(1)
           .expectBodyContains('$S{studentId}');

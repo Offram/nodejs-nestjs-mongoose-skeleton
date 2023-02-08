@@ -28,4 +28,29 @@ export class ClassroomService {
 
     return classrooms;
   }
+
+  async getOne(id: string) {
+    //Get One Classroom from the db
+    const classrooms = await this.classroomModel
+      .findOne({
+        _id: id,
+      })
+      .exec();
+
+    return classrooms;
+  }
+
+  async editById(id: string, dto: ClassroomDto) {
+    //Update the Classroom in the db
+    const classroom = await this.classroomModel
+      .findByIdAndUpdate(id, dto)
+      .exec();
+
+    return classroom.toJSON();
+  }
+
+  async deleteById(id: string) {
+    //Delete the Classroom in the db
+    await this.classroomModel.findByIdAndDelete(id).exec();
+  }
 }
