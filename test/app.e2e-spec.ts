@@ -54,7 +54,7 @@ describe('App e2e', () => {
       it('should return classroom', () => {
         return pactum
           .spec()
-          .post('/classroom')
+          .post('/classrooms')
           .withBody(dto)
           .expectStatus(201)
           .stores('classroomId', '_id');
@@ -65,10 +65,56 @@ describe('App e2e', () => {
       it('should get classrooms', () => {
         return pactum
           .spec()
-          .get('/classroom')
+          .get('/classrooms')
           .expectStatus(200)
           .expectJsonLength(1)
           .expectBodyContains('$S{classroomId}');
+      });
+    });
+
+    describe('Get Classroom by Id', () => {
+      it('should get Classroom by Id', () => {
+        return pactum
+          .spec()
+          .get('/classrooms/{id}')
+          .withPathParams('id', '$S{classroomId}')
+          .expectStatus(200)
+          .expectBodyContains('$S{classroomId}');
+      });
+    });
+
+    describe('Edit Classroom by Id', () => {
+      const dto: ClassroomDto = {
+        classroomName: 'First Test Classroom 2',
+      };
+
+      it('should get Classroom by Id', () => {
+        return pactum
+          .spec()
+          .patch('/classrooms/{id}')
+          .withPathParams('id', '$S{classroomId}')
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains('$S{classroomId}')
+          .expectBodyContains(dto.classroomName);
+      });
+    });
+
+    describe('Delete Classroom by Id', () => {
+      it('should delete Classroom by Id', () => {
+        return pactum
+          .spec()
+          .delete('/classrooms/{id}')
+          .withPathParams('id', '$S{classroomId}')
+          .expectStatus(204);
+      });
+
+      it('should get empty classrooms', () => {
+        return pactum
+          .spec()
+          .get('/classrooms')
+          .expectStatus(200)
+          .expectBody([]);
       });
     });
   });
@@ -86,25 +132,80 @@ describe('App e2e', () => {
         _classroomId: '$S{classroomId}',
       };
 
-      it('should return student', () => {
-        const res = pactum
+      it('should return Student', () => {
+        return pactum
           .spec()
-          .post('/student')
+          .post('/students')
           .withBody(dto)
           .expectStatus(201)
           .stores('studentId', '_id');
-        return res;
       });
     });
 
-    describe('Get students', () => {
-      it('should get students', () => {
+    describe('Get Students', () => {
+      it('should get Students', () => {
         return pactum
           .spec()
-          .get('/student')
+          .get('/students')
           .expectStatus(200)
           .expectJsonLength(1)
           .expectBodyContains('$S{studentId}');
+      });
+    });
+
+    describe('Get Student by Id', () => {
+      it('should get Student by Id', () => {
+        return pactum
+          .spec()
+          .get('/students/{id}')
+          .withPathParams('id', '$S{studentId}')
+          .expectStatus(200)
+          .expectBodyContains('$S{studentId}');
+      });
+    });
+
+    describe('Edit Student by Id', () => {
+      const dto: StudentDto = {
+        firstName: 'First Name 2',
+        lastName: 'Last Name 2',
+        contactPerson: 'Contact Person 2',
+        contactNo: '+1111111112',
+        email: 'test@test2.com',
+        dob: new Date('1991-02-05T02:23:33.933Z'),
+        age: 51,
+        _classroomId: '$S{classroomId}',
+      };
+
+      it('should get Student by Id', () => {
+        return pactum
+          .spec()
+          .patch('/students/{id}')
+          .withPathParams('id', '$S{studentId}')
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains('$S{studentId}')
+          .expectBodyContains(dto.firstName)
+          .expectBodyContains(dto.lastName)
+          .expectBodyContains(dto.contactPerson)
+          .expectBodyContains(dto.contactNo)
+          .expectBodyContains(dto.email)
+          .expectBodyContains(dto.dob)
+          .expectBodyContains(dto.age)
+          .expectBodyContains(dto._classroomId);
+      });
+    });
+
+    describe('Delete Student by Id', () => {
+      it('should delete Student by Id', () => {
+        return pactum
+          .spec()
+          .delete('/students/{id}')
+          .withPathParams('id', '$S{studentId}')
+          .expectStatus(204);
+      });
+
+      it('should get empty Students', () => {
+        return pactum.spec().get('/students').expectStatus(200).expectBody([]);
       });
     });
   });

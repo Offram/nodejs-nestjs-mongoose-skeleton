@@ -43,7 +43,7 @@ export class ClassroomService {
   async editById(id: string, dto: ClassroomDto) {
     //Update the Classroom in the db
     const classroom = await this.classroomModel
-      .findByIdAndUpdate(id, dto)
+      .findByIdAndUpdate(id, dto, { new: true })
       .exec();
 
     return classroom.toJSON();

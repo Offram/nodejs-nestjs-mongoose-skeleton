@@ -39,7 +39,9 @@ export class StudentService {
 
   async editById(id: string, dto: StudentDto) {
     //Update the Student in the db
-    const student = await this.studentModel.findByIdAndUpdate(id, dto).exec();
+    const student = await this.studentModel
+      .findByIdAndUpdate(id, dto, { new: true })
+      .exec();
 
     return student.toJSON();
   }

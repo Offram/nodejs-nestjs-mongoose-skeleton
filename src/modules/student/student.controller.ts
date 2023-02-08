@@ -12,7 +12,7 @@ import {
 import { StudentDto } from './dto';
 import { StudentService } from './student.service';
 
-@Controller('student')
+@Controller('students')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
