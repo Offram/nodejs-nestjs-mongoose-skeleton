@@ -72,8 +72,10 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](LICENSE).
 
-COMMANDS USED in the Project
 
+
+# COMMANDS USED in the Project
+```
 npm outdated
 npm update -g
 npm update npm@latest
@@ -96,7 +98,9 @@ npm install @nestjs/swagger
 npm i -D pactum
 npm i -D dotenv-cli
 npm run test:e2e
+```
 
+```
 db.createUser({
   user:'TestUser',
   pwd: passwordPrompt(),
@@ -104,3 +108,18 @@ db.createUser({
       { role: 'readWrite', db:'TestDb'}
     ]
 })
+```
+
+## Cloning a Repo
+```
+git clone --bare https://github.com/EXAMPLE-USER/OLD-REPOSITORY.git
+```
+```
+$ cd OLD-REPOSITORY.git
+$ git push --mirror https://github.com/EXAMPLE-USER/NEW-REPOSITORY.git
+```
+
+```
+$ cd ..
+$ rm -rf OLD-REPOSITORY.git
+```
